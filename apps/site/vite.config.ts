@@ -10,7 +10,9 @@ export default defineConfig({
     tailwindcss(),
     foldkit({
       ssr: {
-        build: { prerender: { origin: "https://example.com" } },
+        build: {
+          prerender: { origin: "https://portfolio.przytrzask.workers.dev" },
+        },
         clientEntry: "/src/entry.ts",
         serverEntry: "/src/entry.server.ts",
       },
