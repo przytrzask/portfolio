@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.turbo/
+coverage/
+**/.alchemy/bundles/
+**/.alchemy/local/
+**/.alchemy/log/
+**/.alchemy/version-check.json
+.pi-subagents/
+*.log
+.DS_Store
+.env
+.env.local
+.env.*.local
+.e2e/
+*.swp
