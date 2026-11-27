@@ -1,0 +1,148 @@
+{
+  "_about": "Master record for your job search. Lives in your portfolio repo next to brag/ and case-studies/. GitHub, your resume and LinkedIn are built from this file and checked against it with scripts/sync_check.py. Keep it public-safe: no client names under NDA, no private links.",
+  "profile": {
+    "name": "[ask: your full name as it appears on your resume]",
+    "headline": "product engineer. I ship full stack features end to end and build the AI tooling that helps teams ship them.",
+    "target_role": "Product engineer",
+    "onet_code": "15-1252.00",
+    "summary": "[ask: two or three sentences in your own words: what you build, for whom, and your strongest proof]",
+    "location": "[ask: city and country, or Remote]",
+    "email": "[ask: public contact email]"
+  },
+  "links": {
+    "site": "https://portfolio.przytrzask.workers.dev",
+    "github": "https://github.com/przytrzask",
+    "linkedin": "[ask: LinkedIn profile URL]"
+  },
+  "experience": [
+    {
+      "title": "[ask: job title]",
+      "org": "Housecall Pro",
+      "start": "[ask: YYYY-MM]",
+      "end": "[ask: YYYY-MM or present]",
+      "highlights": []
+    },
+    {
+      "title": "[ask: job title]",
+      "org": "[ask: how to name the contract engagement, e.g. Proxify (contract)]",
+      "start": "[ask: YYYY-MM]",
+      "end": "[ask: YYYY-MM or present]",
+      "highlights": []
+    }
+  ],
+  "artifacts": [
+    {
+      "name": "business-insurance",
+      "one_liner": "Business insurance inside Housecall Pro through a partner integration, with pay-as-you-go pricing driven by payroll runs",
+      "url": "https://portfolio.przytrzask.workers.dev/work/business-insurance",
+      "repo": "",
+      "depth": 4,
+      "skills": [
+        "Partner API integration",
+        "Usage-based pricing",
+        "Full stack product engineering",
+        "[ask: languages and frameworks you used]"
+      ],
+      "evidence": ["launched in about 3 months"],
+      "case_study": "case-studies/business-insurance.md",
+      "proof": {
+        "value": "~3 mo",
+        "label": "to launch"
+      }
+    },
+    {
+      "name": "ai-sdlc-rollout",
+      "one_liner": "Brought AI coding agents into the SDLC with gated stages and browser-verified changes, and merged two PRs into the e2e testing framework",
+      "url": "https://portfolio.przytrzask.workers.dev/work/ai-sdlc-rollout",
+      "repo": "[ask: pi-rpi-workflow repo URL, once its README is scrubbed of employer-internal URLs]",
+      "depth": 3,
+      "skills": [
+        "AI-assisted SDLC",
+        "AI agents",
+        "End-to-end testing",
+        "TypeScript",
+        "Open source",
+        "Mutation testing"
+      ],
+      "evidence": [
+        "e2e-inc/e2e PR #1979 (merged)",
+        "e2e-inc/e2e PR #1982 (merged)",
+        "pi-rpi-workflow: 8 gated stages, tests in CI"
+      ],
+      "case_study": "case-studies/ai-sdlc-rollout.md",
+      "proof": {
+        "value": "2",
+        "label": "PRs merged into e2e-inc/e2e"
+      }
+    },
+    {
+      "name": "suunto-coach",
+      "one_liner": "An AI endurance coach, deployed on Cloudflare, that reads your Suunto training history and must pass a 40-case eval gate before every deploy",
+      "url": "https://portfolio.przytrzask.workers.dev/work/suunto-coach",
+      "repo": "[ask: public repo URL once suunto-coach is published; until then the page says code available on request]",
+      "depth": 3,
+      "skills": [
+        "TypeScript",
+        "Effect",
+        "Cloudflare Workers",
+        "Cloudflare D1",
+        "Cloudflare Queues",
+        "Claude API",
+        "LLM evals",
+        "OAuth",
+        "XState",
+        "Foldkit",
+        "Alchemy",
+        "Vitest",
+        "Property-based testing",
+        "CI/CD"
+      ],
+      "evidence": [
+        "ADR 0005 topic-rule eval gate",
+        "eval: 40 cases, 95% gate, 39/40 and 40/40 after a fix",
+        "5 ADRs",
+        "about 350 tests, CI on every push",
+        "architecture diagram"
+      ],
+      "case_study": "case-studies/suunto-coach.md",
+      "proof": {
+        "value": "40/40",
+        "label": "eval cases passed (95% gate)"
+      }
+    },
+    {
+      "name": "ticket-to-merge",
+      "one_liner": "An agent loop that takes tickets in a client codebase to verified, merged pull requests, and sends anything risky to human review",
+      "url": "https://portfolio.przytrzask.workers.dev/work/ticket-to-merge",
+      "repo": "",
+      "depth": 4,
+      "skills": [
+        "AI agents",
+        "Claude",
+        "LLM orchestration",
+        "Python",
+        "End-to-end testing",
+        "Merge gates",
+        "TypeScript",
+        "React"
+      ],
+      "evidence": [
+        "101 tickets through the loop",
+        "23 auto-merged, 0 bad AUTO calls",
+        "red-on-base verification",
+        "architecture diagram"
+      ],
+      "case_study": "case-studies/ticket-to-merge.md",
+      "proof": {
+        "value": "23",
+        "label": "PRs auto-merged, 0 bad AUTO calls"
+      }
+    }
+  ],
+  "brag": {
+    "entries": "brag/entries",
+    "inbox": "brag/inbox",
+    "_note": "Friday Setup writes raw pulls to brag/inbox (git-ignored). Curated, public-safe entries are promoted to brag/entries and can be published as a Shipped log on your site."
+  },
+  "_depth_ladder": "1 local | 2 deployed | 3 engineered (tests, CI, evals, ADRs, observability) | 4 used (real users, measured outcome)"
+}

@@ -10,6 +10,17 @@ A portfolio site and the master record behind the resume, LinkedIn and GitHub. T
 - Effect 4.1, TypeScript 7, checked by `effect-tsrs` with the Effect diagnostics in `tsconfig.base.json` set as errors.
 - pnpm 11.3.0, Node 24.18.0 (`.nvmrc`), Turbo.
 
+## Content
+
+The repo root holds the job kit's portfolio layout, and the site reads it at build time:
+
+- `portfolio.json`: the master record (the kit schema plus `artifacts[].proof` for the home page's proof cards). `apps/site/src/content/portfolio.ts` decodes it, and the build fails if it doesn't match.
+- `case-studies/<slug>.md`: one per artifact, with the kit's sections as headings (Context, My role and constraints, Key decisions, What went wrong, Result, The evidence). Each becomes `/work/<slug>`, and its artifact's `case_study` must point at it.
+- `brag/entries/YYYY-MM-DD.md`: curated wins for `/shipped`. Entries without `status: curated` are skipped.
+- `public/resume.pdf`: served at `/resume.pdf`.
+
+NDA: no client or employer-internal names, people, ticket IDs or internal URLs. Write `[ask: …]` for any fact you don't have; never invent one. Links whose value is still `[ask: …]` aren't rendered.
+
 ## Commands
 
 | Command | What it does |

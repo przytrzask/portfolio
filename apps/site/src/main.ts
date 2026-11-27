@@ -1,26 +1,23 @@
-import { Effect, pipe, Schema } from "effect";
-import { Command, Route } from "foldkit";
+import { Effect, Schema } from "effect";
+import { Command } from "foldkit";
 import type { Runtime, Update } from "foldkit";
 import type { Document, Html, HtmlBuilder } from "foldkit/html";
 import { defineMessageUnion } from "foldkit/message";
 import { load, pushUrl, UrlRequest } from "foldkit/navigation";
-import { defineRouteUnion } from "foldkit/route";
 import { modifyFields } from "foldkit/struct";
 import { toString as urlToString, Url } from "foldkit/url";
 
-export const HEADLINE =
-  "product engineer. I ship full stack features end to end and build the AI tooling that helps teams ship them.";
+import { shipped } from "./content/brag.ts";
+import { findWork, works } from "./content/case-studies.ts";
+import { portfolio } from "./content/portfolio.ts";
+import { proofCards } from "./content/proof-cards.ts";
+import { copy } from "./copy.ts";
+import { homeView } from "./pages/home.ts";
+import { shippedView } from "./pages/shipped.ts";
+import { workView } from "./pages/work.ts";
+import { AppRoute, urlToAppRoute } from "./route.ts";
 
-export const AppRoute = defineRouteUnion({
-  Home: {},
-  NotFound: { path: Schema.String },
-});
-
-export type AppRoute = typeof AppRoute.Type;
-
-const homeRouter = pipe(Route.root, Route.mapTo(AppRoute.Home));
-
-const urlToAppRoute = Route.parseUrlWithFallback(homeRouter, AppRoute.NotFound);
+export { AppRoute } from "./route.ts";
 
 export const Model = Schema.Struct({
   route: AppRoute,
@@ -77,30 +74,41 @@ export const update = (model: Model, message: Message) =>
     CompletedNavigateInternal: () => ({ model }),
   });
 
+const notFoundView = (h: HtmlBuilder<Message>, path: string): Html =>
+  h.section(
+    [],
+    [h.h1([], [copy.notFoundTitle]), h.p([], [copy.notFoundBody(path)])]
+  );
+
 const pageView = (model: Model, h: HtmlBuilder<Message>): Html =>
   AppRoute.match(model.route, {
-    Home: () =>
-      h.section(
-        [h.Class("grid gap-6")],
-        [h.h1([h.Class("text-4xl font-semibold tracking-tight")], [HEADLINE])]
-      ),
-    NotFound: ({ path }) =>
-      h.section(
-        [h.Class("grid gap-6")],
-        [
-          h.h1(
-            [h.Class("text-4xl font-semibold tracking-tight")],
-            ["Not found"]
-          ),
-          h.p([], [`Nothing lives at ${path}.`]),
-        ]
-      ),
+    Home: () => homeView(h, { portfolio, proofCards, shipped, works }),
+    NotFound: ({ path }) => notFoundView(h, path),
+    Shipped: () => shippedView(h, { shipped, works }),
+    Work: ({ slug }) => {
+      const work = findWork(slug);
+
+      return work === undefined
+        ? notFoundView(h, `/work/${slug}`)
+        : workView(h, work);
+    },
+  });
+
+const pageTitle = (route: AppRoute): string =>
+  AppRoute.match(route, {
+    Home: () => copy.documentTitle,
+    NotFound: () => `${copy.notFoundTitle} · ${copy.documentTitle}`,
+    Shipped: () => copy.shippedTitle,
+    Work: ({ slug }) => {
+      const work = findWork(slug);
+
+      return work === undefined
+        ? `${copy.notFoundTitle} · ${copy.documentTitle}`
+        : copy.workTitle(work.caseStudy.title);
+    },
   });
 
 export const view = (model: Model, h: HtmlBuilder<Message>): Document => ({
-  body: h.main(
-    [h.Class("mx-auto grid min-h-screen max-w-3xl content-center p-8")],
-    [pageView(model, h)]
-  ),
-  title: "Portfolio · product engineer",
+  body: h.main([h.Class("mx-auto max-w-3xl p-8")], [pageView(model, h)]),
+  title: pageTitle(model.route),
 });

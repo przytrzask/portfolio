@@ -14,3 +14,31 @@ coverage/
 .env.*.local
 .e2e/
 *.swp
+
+# Job kit: templates/portfolio-repo/gitignore
+# Raw, uncurated job-search data never goes to GitHub
+brag/inbox/
+.friday-setup-state.json
+*resume*
+*Resume*
+funnel*.csv
+score.json
+score.md
+
+# Scores and reports quote your resume
+*-score.json
+*-score.md
+composite.json
+composite.md
+plan.md
+sync.md
+screen*.json
+screen*.md
+quals*.json
+grades*.json
+linkedin*.txt
+linkedin*.pdf
+Profile.pdf
+
+# The published resume placeholder is part of the site
+!/public/resume.pdf
