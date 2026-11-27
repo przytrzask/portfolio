@@ -1,7 +1,13 @@
 export const HEADLINE =
   "product engineer. I ship full stack features end to end and build the AI tooling that helps teams ship them.";
 
+export const HEADLINE_HIGHLIGHT = "end to end";
+
 export const copy = {
+  allCaseStudies: "All case studies",
+  backHome: "Home",
+  caseNumber: (index: number, name: string) =>
+    `case ${String(index + 1).padStart(2, "0")} · ${name}`,
   caseStudyLabel: "[ case study ]",
   codeOnRequest: "Code available on request",
   contactLinks: "Contact and profiles",
@@ -14,13 +20,20 @@ export const copy = {
   documentTitle: "Portfolio · product engineer",
   email: "Email",
   github: "GitHub",
-  heroLabel: "[ portfolio ]",
+  heroLabel: (maybeName: string | undefined) =>
+    maybeName === undefined
+      ? "[\u00A0product engineer · freestyle skier\u00A0]"
+      : `[\u00A0${maybeName} · product engineer · freestyle skier\u00A0]`,
   home: "Home",
   linkedin: "LinkedIn",
   notFoundBody: (path: string) => `Nothing lives at ${path}.`,
+  notFoundLabel: "[ off piste ]",
   notFoundTitle: "Not found",
   proofCards: "Proof",
   proofCta: "Read the case study",
+  proofCtaShort: "case study",
+  scrollHint: "scroll to drop in",
+  trailLegend: "Trail markers rate each case study by depth",
   resume: "Resume (PDF)",
   resumeHref: "/resume.pdf",
   shippedAll: "All shipped work",

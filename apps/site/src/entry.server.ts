@@ -5,7 +5,7 @@ import { caseStudies } from "./content/case-studies.ts";
 import { init, view } from "./main.ts";
 import { shippedHref, workHref } from "./route.ts";
 
-export const renderDocument = Server.renderDocument;
+export { renderDocument } from "./document.ts";
 
 export const prerenderPaths: ReadonlyArray<string> = [
   "/",

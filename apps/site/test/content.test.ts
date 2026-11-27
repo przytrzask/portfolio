@@ -4,7 +4,13 @@ import { describe, expect, test } from "vitest";
 
 import portfolioJson from "../../../portfolio.json";
 import { BragFrontmatter } from "../src/content/brag-frontmatter.ts";
-import { bragItems, shipped } from "../src/content/brag.ts";
+import {
+  bragItems,
+  formatPeriod,
+  shipped,
+  shippedSortKey,
+  shippedWhen,
+} from "../src/content/brag.ts";
 import {
   caseStudies,
   caseStudyFromDocument,
@@ -23,7 +29,7 @@ import {
 const parse = (source: string) =>
   parseMarkdownWithFrontmatter(source, { frontmatter: BragFrontmatter });
 
-const bragSource = (status: string) => `---
+const bragSource = (status: string, dateLine = "- Date: 2026-11-23\n") => `---
 type: brag-entry
 period_start: 2026-11-21
 period_end: 2026-11-27
@@ -34,14 +40,14 @@ status: ${status}
 
 ### Added test.slow() to the e2e test runner
 
-- Impact: Merged on 2026-11-23
+${dateLine}- Impact: Merged on 2026-11-23
 - Skills: TypeScript, Open source; Mutation testing
 - Portfolio artifact: ai-sdlc-rollout
 - Proof: https://github.com/e2e-inc/e2e/pull/1982
 `;
 
-const entry = (status: string) => {
-  const { document, maybeFrontmatter } = parse(bragSource(status));
+const entry = (status: string, dateLine?: string) => {
+  const { document, maybeFrontmatter } = parse(bragSource(status, dateLine));
 
   return bragItems(
     "2026-11-27.md",
@@ -145,6 +151,7 @@ describe("brag entries", () => {
         artifact: "ai-sdlc-rollout",
         file: "2026-11-27.md",
         impact: "Merged on 2026-11-23",
+        maybeDate: Option.some("2026-11-23"),
         maybeProofUrl: Option.some("https://github.com/e2e-inc/e2e/pull/1982"),
         periodEnd: "2026-11-27",
         periodStart: "2026-11-21",
@@ -153,6 +160,47 @@ describe("brag entries", () => {
         what: "Added test.slow() to the e2e test runner",
       },
     ]);
+  });
+
+  test("an item shows its own Date, or the entry's period without one", () => {
+    const [dated] = entry("curated");
+    const [undated] = entry("curated", "");
+
+    expect(dated === undefined ? undefined : shippedWhen(dated)).toEqual({
+      maybeDateTime: Option.some("2026-11-23"),
+      text: "23 Nov 2026",
+    });
+    expect(undated?.maybeDate).toEqual(Option.none());
+    expect(undated === undefined ? undefined : shippedWhen(undated)).toEqual({
+      maybeDateTime: Option.none(),
+      text: "21–27 Nov 2026",
+    });
+  });
+
+  test("a period range names each month and year only where it changes", () => {
+    expect(formatPeriod("2026-11-21", "2026-11-27")).toBe("21–27 Nov 2026");
+    expect(formatPeriod("2026-11-28", "2026-12-04")).toBe(
+      "28 Nov – 4 Dec 2026"
+    );
+    expect(formatPeriod("2026-12-28", "2027-01-03")).toBe(
+      "28 Dec 2026 – 3 Jan 2027"
+    );
+    expect(formatPeriod("2026-11-27", "2026-11-27")).toBe("27 Nov 2026");
+  });
+
+  test("a Date that is malformed or outside the entry's period is refused", () => {
+    expect(() => entry("curated", "- Date: 23 Nov 2026\n")).toThrow(
+      /YYYY-MM-DD/u
+    );
+    expect(() => entry("curated", "- Date: 2026-12-01\n")).toThrow(
+      /outside the entry's period/u
+    );
+  });
+
+  test("the shipped log lists the newest item first", () => {
+    const keys = shipped.map(shippedSortKey);
+
+    expect(keys).toEqual(keys.toSorted().toReversed());
   });
 
   test("a raw entry is skipped", () => {

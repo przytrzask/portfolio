@@ -1,1 +1,41 @@
 @import "tailwindcss";
+@import "@fontsource-variable/tasa-orbiter/wght.css";
+@import "@fontsource-variable/geist-mono/wght.css";
+
+@theme {
+  --breakpoint-md: 47.5rem;
+
+  --color-snow: #e9eff7;
+  --color-ink: #0f1b2d;
+  --color-blue: #1f6feb;
+  --color-hi: #ffd23f;
+  --color-kick: #ff5a36;
+  --color-green: #1e9e4a;
+  --color-slope: #3a5a8c;
+  --color-body: #26384f;
+  --color-track: #b8c8e2;
+
+  --font-sans:
+    "TASA Orbiter Variable", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --font-mono:
+    "Geist Mono Variable", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --shadow-hard: 6px 6px 0 var(--color-ink);
+  --shadow-hard-sm: 4px 4px 0 var(--color-ink);
+}
+
+@layer base {
+  html {
+    background-color: var(--color-snow);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-hi);
+    color: var(--color-ink);
+  }
+}

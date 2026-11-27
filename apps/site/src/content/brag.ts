@@ -9,6 +9,7 @@ export type ShippedItem = Readonly<{
   anchor: string;
   periodStart: string;
   periodEnd: string;
+  maybeDate: Option.Option<string>;
   area: string;
   what: string;
   impact: string;
@@ -32,6 +33,78 @@ type Draft = Readonly<{
 }>;
 
 const decodeFrontmatter = Schema.decodeUnknownSync(BragFrontmatter);
+
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/u;
+
+const MONTHS = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+] as const;
+
+type DateParts = Readonly<{ year: string; month: string; day: string }>;
+
+const dateParts = (isoDate: string): DateParts => {
+  const [year = "", month = "", day = ""] = isoDate.split("-");
+
+  return {
+    day: String(Number(day)),
+    month: MONTHS[Number(month) - 1] ?? month,
+    year,
+  };
+};
+
+export const formatDate = (isoDate: string): string => {
+  const { day, month, year } = dateParts(isoDate);
+
+  return `${day} ${month} ${year}`;
+};
+
+export const formatPeriod = (start: string, end: string): string => {
+  const from = dateParts(start);
+  const to = dateParts(end);
+
+  if (start === end) {
+    return formatDate(end);
+  }
+
+  if (from.year !== to.year) {
+    return `${formatDate(start)} – ${formatDate(end)}`;
+  }
+
+  return from.month === to.month
+    ? `${from.day}–${to.day} ${to.month} ${to.year}`
+    : `${from.day} ${from.month} – ${to.day} ${to.month} ${to.year}`;
+};
+
+export type ShippedWhen = Readonly<{
+  maybeDateTime: Option.Option<string>;
+  text: string;
+}>;
+
+export const shippedWhen = (item: ShippedItem): ShippedWhen =>
+  Option.match(item.maybeDate, {
+    onNone: () => ({
+      maybeDateTime: Option.none(),
+      text: formatPeriod(item.periodStart, item.periodEnd),
+    }),
+    onSome: (date) => ({
+      maybeDateTime: Option.some(date),
+      text: formatDate(date),
+    }),
+  });
+
+export const shippedSortKey = (item: ShippedItem): string =>
+  Option.getOrElse(item.maybeDate, () => item.periodEnd);
 
 const firstLinkUrl = (
   inlines: ReadonlyArray<Markdown.Inline>
@@ -97,6 +170,32 @@ const fieldText = (draft: Draft, label: string) =>
     }
   );
 
+const fieldDate = (
+  file: string,
+  draft: Draft,
+  meta: BragFrontmatter
+): Option.Option<string> => {
+  const text = fieldText(draft, "Date");
+
+  if (text === "") {
+    return Option.none();
+  }
+
+  if (!ISO_DATE.test(text)) {
+    throw new Error(
+      `brag/entries/${file}: "${draft.what}" has Date "${text}"; write it as YYYY-MM-DD.`
+    );
+  }
+
+  if (text < meta.period_start || text > meta.period_end) {
+    throw new Error(
+      `brag/entries/${file}: "${draft.what}" has Date ${text}, outside the entry's period ${meta.period_start} to ${meta.period_end}.`
+    );
+  }
+
+  return Option.some(text);
+};
+
 const fieldLink = (draft: Draft, label: string) =>
   Option.flatMap(
     Array.findFirst(draft.fields, (field) => field.label === label),
@@ -124,6 +223,7 @@ export const bragItems = (
     artifact: fieldText(draft, "Portfolio artifact"),
     file,
     impact: fieldText(draft, "Impact"),
+    maybeDate: fieldDate(file, draft, meta),
     maybeProofUrl: fieldLink(draft, "Proof"),
     periodEnd: meta.period_end,
     periodStart: meta.period_start,
@@ -148,4 +248,6 @@ export const shipped: ReadonlyArray<ShippedItem> = Object.entries(modules)
       Markdown.decodeDocument(module.default)
     )
   )
-  .toSorted((left, right) => right.periodEnd.localeCompare(left.periodEnd));
+  .toSorted((left, right) =>
+    shippedSortKey(right).localeCompare(shippedSortKey(left))
+  );

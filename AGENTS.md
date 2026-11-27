@@ -16,10 +16,16 @@ The repo root holds the job kit's portfolio layout, and the site reads it at bui
 
 - `portfolio.json`: the master record (the kit schema plus `artifacts[].proof` for the home page's proof cards). `apps/site/src/content/portfolio.ts` decodes it, and the build fails if it doesn't match.
 - `case-studies/<slug>.md`: one per artifact, with the kit's sections as headings (Context, My role and constraints, Key decisions, What went wrong, Result, The evidence). Each becomes `/work/<slug>`, and its artifact's `case_study` must point at it.
-- `brag/entries/YYYY-MM-DD.md`: curated wins for `/shipped`. Entries without `status: curated` are skipped.
+- `brag/entries/YYYY-MM-DD.md`: curated wins for `/shipped`. Entries without `status: curated` are skipped. An optional `- Date: YYYY-MM-DD` bullet per item gives its own date (it must fall inside the entry's period); without it the item shows the period, like "21–27 Nov 2026". The kit's `resume_rebuild.py` ignores the bullet.
 - `public/resume.pdf`: served at `/resume.pdf`.
 
 NDA: no client or employer-internal names, people, ticket IDs or internal URLs. Write `[ask: …]` for any fact you don't have; never invent one. Links whose value is still `[ask: …]` aren't rendered.
+
+## Look
+
+- The piste look: tokens in `apps/site/src/styles.css` (`@theme`), every class string in `apps/site/src/styles.ts`, case-study Markdown styled through `src/markdown-views.ts`. Below 760 px (`md`) the page is one column.
+- Fonts are self-hosted from `@fontsource-variable/tasa-orbiter` and `@fontsource-variable/geist-mono` (OFL-1.1); `src/document.ts` preloads the Latin TASA Orbiter file. No third-party URL may appear in the build.
+- Icons are SVG path data in `src/icons.ts`, copied from simple-icons (CC0-1.0; LinkedIn from 13.0.0, the last release that had it) and lucide-static (ISC, © Lucide Icons and Contributors). Every icon is `aria-hidden` beside visible link text.
 
 ## Commands
 

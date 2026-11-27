@@ -135,7 +135,7 @@
       "case_study": "case-studies/ticket-to-merge.md",
       "proof": {
         "value": "23",
-        "label": "PRs auto-merged, 0 bad AUTO calls"
+        "label": "PRs auto-merged, none overturned by a human"
       }
     }
   ],

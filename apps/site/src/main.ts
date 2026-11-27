@@ -13,9 +13,11 @@ import { portfolio } from "./content/portfolio.ts";
 import { proofCards } from "./content/proof-cards.ts";
 import { copy } from "./copy.ts";
 import { homeView } from "./pages/home.ts";
+import { zoneView } from "./pages/piste.ts";
 import { shippedView } from "./pages/shipped.ts";
 import { workView } from "./pages/work.ts";
-import { AppRoute, urlToAppRoute } from "./route.ts";
+import { AppRoute, homeHref, urlToAppRoute } from "./route.ts";
+import * as styles from "./styles.ts";
 
 export { AppRoute } from "./route.ts";
 
@@ -75,9 +77,26 @@ export const update = (model: Model, message: Message) =>
   });
 
 const notFoundView = (h: HtmlBuilder<Message>, path: string): Html =>
-  h.section(
-    [],
-    [h.h1([], [copy.notFoundTitle]), h.p([], [copy.notFoundBody(path)])]
+  h.div(
+    [h.Class(styles.pageWork)],
+    [
+      zoneView(
+        h,
+        "left",
+        [
+          h.section(
+            [h.Class(styles.panel)],
+            [
+              h.p([h.Class(styles.label)], [copy.notFoundLabel]),
+              h.h1([h.Class(styles.h1Work)], [copy.notFoundTitle]),
+              h.p([h.Class(styles.body)], [copy.notFoundBody(path)]),
+              h.a([h.Href(homeHref()), h.Class(styles.moreLink)], [copy.home]),
+            ]
+          ),
+        ],
+        "fit"
+      ),
+    ]
   );
 
 const pageView = (model: Model, h: HtmlBuilder<Message>): Html =>
@@ -109,6 +128,6 @@ const pageTitle = (route: AppRoute): string =>
   });
 
 export const view = (model: Model, h: HtmlBuilder<Message>): Document => ({
-  body: h.main([h.Class("mx-auto max-w-3xl p-8")], [pageView(model, h)]),
+  body: h.main([h.Class(styles.main)], [pageView(model, h)]),
   title: pageTitle(model.route),
 });
