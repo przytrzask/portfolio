@@ -75,6 +75,11 @@ const proofCard = <Message>(h: HtmlBuilder<Message>, work: Work): Html =>
       h.a(
         [h.Href(workHref(work.caseStudy.slug)), h.Class(styles.card)],
         [
+          h.span(
+            [h.Class(styles.cardProject), h.DataAttribute("project", "")],
+            [copy.projectLabel(work.artifact.name)]
+          ),
+          " ",
           h.strong([h.Class(styles.cardValue)], [work.artifact.proof.value]),
           " ",
           h.span([h.Class(styles.cardLabel)], [work.artifact.proof.label]),
@@ -134,10 +139,6 @@ const heroZone = <Message>(
         h.ul(
           [h.AriaLabel(copy.proofCards), h.Class(styles.cards)],
           content.proofCards.map((work) => proofCard(h, work))
-        ),
-        h.p(
-          [h.Class(styles.hint)],
-          [iconView(h, "arrowDown", styles.iconSmall), copy.scrollHint]
         ),
       ]
     ),

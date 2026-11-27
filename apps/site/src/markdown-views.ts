@@ -2,6 +2,8 @@ import * as Markdown from "@foldkit/markdown";
 import { Match, Option } from "effect";
 import { inertHtml as ih } from "foldkit/html";
 
+import { findDiagram, renderedDiagrams } from "./content/diagrams.ts";
+import { MERMAID_LANGUAGE, type RenderedDiagram } from "./diagrams/diagram.ts";
 import { md } from "./styles.ts";
 
 const startAttribute = (maybeStart: Option.Option<number>) =>
@@ -10,11 +12,35 @@ const startAttribute = (maybeStart: Option.Option<number>) =>
     onSome: (start) => [ih.Start(start)],
   });
 
-export const markdownViews: Markdown.Views = {
+const codeView = (value: string) =>
+  ih.pre([ih.Class(md.pre)], [ih.code([], [value])]);
+
+const diagramView = (diagram: RenderedDiagram) =>
+  ih.figure(
+    [ih.Class(md.figure)],
+    [
+      ih.div([
+        ih.Class(md.diagram),
+        ih.Attribute("tabindex", "0"),
+        ih.InnerHTML(diagram.svg),
+      ]),
+      ih.figcaption([ih.Class(md.figcaption)], [diagram.title]),
+    ]
+  );
+
+export const markdownViewsWith = (
+  diagrams: ReadonlyArray<RenderedDiagram>
+): Markdown.Views => ({
   ...Markdown.defaultViews,
   Blockquote: (_blockquote, blocks) =>
     ih.blockquote([ih.Class(md.blockquote)], blocks),
-  CodeBlock: ({ value }) => ih.pre([ih.Class(md.pre)], [ih.code([], [value])]),
+  CodeBlock: ({ maybeLanguage, value }) =>
+    Option.contains(maybeLanguage, MERMAID_LANGUAGE)
+      ? Option.match(findDiagram(value, diagrams), {
+          onNone: () => codeView(value),
+          onSome: diagramView,
+        })
+      : codeView(value),
   Heading: ({ level }, content) =>
     Match.value(level).pipe(
       Match.when(2, () => ih.h2([ih.Class(md.h2)], content)),
@@ -30,7 +56,10 @@ export const markdownViews: Markdown.Views = {
   ListItem: (_item, blocks) => ih.li([ih.Class(md.li)], blocks),
   Paragraph: (_paragraph, content) => ih.p([ih.Class(md.p)], content),
   Strong: (_strong, content) => ih.strong([ih.Class(md.strong)], content),
-};
+});
+
+export const markdownViews: Markdown.Views =
+  markdownViewsWith(renderedDiagrams);
 
 export const viewMarkdown = (blocks: ReadonlyArray<Markdown.Block>) =>
   Markdown.viewBlocks({ blocks: [...blocks] }, { views: markdownViews });

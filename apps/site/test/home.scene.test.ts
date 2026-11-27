@@ -69,4 +69,30 @@ describe("home page", () => {
       )
     );
   });
+
+  test("each proof card names its project above the number", () => {
+    scene(
+      { update, view },
+      given({ route: AppRoute.Home() }),
+      ...[
+        ["suunto-coach", "suunto-coach"],
+        ["ticket-to-merge", "ticket → merge"],
+        ["business-insurance", "business insurance"],
+      ].map(([slug, label]) =>
+        expect(
+          selector(
+            `[aria-label="Proof"] a[href="/work/${slug}"] [data-project]`
+          )
+        ).toHaveText(label ?? "")
+      )
+    );
+  });
+
+  test("shows no scroll hint until the skier exists", () => {
+    scene(
+      { update, view },
+      given({ route: AppRoute.Home() }),
+      expect(selector("main")).not.toContainText("scroll to drop in")
+    );
+  });
 });

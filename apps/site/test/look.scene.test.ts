@@ -33,7 +33,9 @@ describe("piste look", () => {
     scene(
       { update, view },
       given({ route }),
-      expectAll(all.selector('svg:not([aria-hidden="true"])')).toHaveCount(0),
+      expectAll(
+        all.selector('svg:not([aria-hidden="true"]):not([role="img"])')
+      ).toHaveCount(0),
       expectAll(all.selector('svg:not([focusable="false"])')).toHaveCount(0)
     );
   });

@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>og card</title>
+    <style>
+      @font-face {
+        font-family: "TASA";
+        src: url("../node_modules/@fontsource-variable/tasa-orbiter/files/tasa-orbiter-latin-wght-normal.woff2")
+          format("woff2");
+        font-weight: 400 800;
+      }
+      @font-face {
+        font-family: "GeistMono";
+        src: url("../node_modules/@fontsource-variable/geist-mono/files/geist-mono-latin-wght-normal.woff2")
+          format("woff2");
+        font-weight: 100 900;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        background: #e9eff7;
+        color: #0f1b2d;
+        font-family: "TASA", sans-serif;
+        position: relative;
+      }
+      .track {
+        position: absolute;
+        inset: 0;
+      }
+      .panel {
+        position: absolute;
+        left: 64px;
+        top: 56px;
+        width: 900px;
+        background: #fff;
+        border: 3px solid #0f1b2d;
+        border-radius: 22px;
+        box-shadow: 10px 10px 0 #0f1b2d;
+        padding: 40px 44px 36px;
+      }
+      .label {
+        font-family: "GeistMono", monospace;
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #3a5a8c;
+      }
+      h1 {
+        margin: 18px 0 30px;
+        font-size: 54px;
+        line-height: 1.04;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      em {
+        font-style: normal;
+        background: linear-gradient(transparent 62%, #ffd23f 62%);
+      }
+      .cards {
+        display: flex;
+        gap: 14px;
+      }
+      .card {
+        flex: 1;
+        border: 3px solid #0f1b2d;
+        border-radius: 14px;
+        padding: 12px 14px;
+      }
+      .project {
+        font-family: "GeistMono", monospace;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #3a5a8c;
+      }
+      .value {
+        font-family: "GeistMono", monospace;
+        font-size: 38px;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        margin-top: 4px;
+      }
+      .cap {
+        font-size: 17px;
+        color: #33465f;
+        margin-top: 2px;
+      }
+      .url {
+        position: absolute;
+        right: 56px;
+        bottom: 40px;
+        font-family: "GeistMono", monospace;
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .marker {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background: #0f1b2d;
+        transform: rotate(45deg);
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <svg
+      class="track"
+      width="1200"
+      height="630"
+      viewBox="0 0 1200 630"
+      aria-hidden="true"
+    >
+      <path
+        d="M1010 -10 C 1150 120, 960 260, 1090 380 S 1040 560, 1160 650"
+        fill="none"
+        stroke="#b8c8e2"
+        stroke-width="5"
+        stroke-dasharray="2 14"
+        stroke-linecap="round"
+      />
+      <path
+        d="M1030 -10 C 1170 120, 980 260, 1110 380 S 1060 560, 1180 650"
+        fill="none"
+        stroke="#b8c8e2"
+        stroke-width="5"
+        stroke-dasharray="2 14"
+        stroke-linecap="round"
+      />
+    </svg>
+    <div class="panel">
+      <div class="label">[&nbsp;product engineer · freestyle skier&nbsp;]</div>
+      <h1>
+        product engineer. I ship full stack features <em>end to end</em> and
+        build the AI tooling that helps teams ship them.
+      </h1>
+      <div class="cards">
+        <div class="card">
+          <div class="project">suunto-coach</div>
+          <div class="value">40/40</div>
+          <div class="cap">eval cases passed (95% gate)</div>
+        </div>
+        <div class="card">
+          <div class="project">ticket → merge</div>
+          <div class="value">23</div>
+          <div class="cap">PRs auto-merged, none overturned</div>
+        </div>
+        <div class="card">
+          <div class="project">business insurance</div>
+          <div class="value">~3 mo</div>
+          <div class="cap">to launch</div>
+        </div>
+      </div>
+    </div>
+    <div class="url">
+      <span class="marker"></span>portfolio.przytrzask.workers.dev
+    </div>
+  </body>
+</html>

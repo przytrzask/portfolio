@@ -39,7 +39,9 @@ The coach runs on a staging stage on Cloudflare: the Website Worker, a private R
 - Architecture diagram:
 
 ```mermaid
-flowchart LR
+flowchart TD
+  accTitle: suunto-coach architecture on Cloudflare
+  accDescr: The browser app calls the Website Worker over typed RPC. A private RPC Worker talks to Claude and the Suunto MCP, runs plans through a queue with a dead-letter queue, and keeps plans, sealed tokens and auth in D1.
   UI["Browser: Foldkit app"] -- "typed RPC" --> WS["Website Worker"]
   WS -- "service binding" --> RB["RPC Worker (private)"]
   RB -- "chat turn, read-only tools" --> AN["Claude"]

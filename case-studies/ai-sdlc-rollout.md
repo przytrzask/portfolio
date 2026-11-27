@@ -35,7 +35,9 @@ Both PRs were merged into e2e-inc/e2e: #1982 `test.slow()` on 2026-11-23 and #19
 - Architecture diagram:
 
 ```mermaid
-flowchart LR
+flowchart TD
+  accTitle: Gated AI SDLC workflow
+  accDescr: Eight stages run from research questions to the PR description, each behind a human approval. A failed browser verification goes back to implementation.
   Q[research questions] --> RS[research] --> D[design] --> S[structure] --> I[implement] --> RV[independent review] --> V[browser verify] --> P[PR description]
   V -- FAIL --> I
 ```

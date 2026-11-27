@@ -318,6 +318,9 @@ importers:
       '@types/node':
         specifier: 24.19.2
         version: 24.19.2
+      beautiful-mermaid:
+        specifier: 1.1.3
+        version: 1.1.3
       jsdom:
         specifier: 30.1.3
         version: 30.1.3
@@ -1739,6 +1742,9 @@ packages:
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
 
+  beautiful-mermaid@1.1.3:
+    resolution: {integrity: sha512-TItrtrAyHp1vwFfFVYauWGrquouk/6SS21Aq3RsxindSYZODcN4xYrPZD6BiZRU+o5mKJzDPz9MUSMvELdylyg==}
+
   bidi-js@1.1.0:
     resolution: {integrity: sha512-fX1Onk0tdVPC7obPWB5EbJ1z7NVhLq4m2xZLq2YXBkxzMXIGRpNMU88n0EPgWseKl12J7zXs7qrDxPK4sRs2fg==}
 
@@ -1827,12 +1833,19 @@ packages:
   effect@4.1.4:
     resolution: {integrity: sha512-Tgrv/9FN+TZYyOn8XSli+fVqAfwDrDAkiX5Uu9vztINb675VTQdhD0gWI5Kzvhlh9QqzjZvw72iugqw5pwoghQ==}
 
+  elkjs@0.11.1:
+    resolution: {integrity: sha512-zxxR9k+rx5ktMwT/FwyLdPCrq7xN6e4VGGHH8hA01vVYKjTFik7nHOxBnAYtrgYUB1RpAiLvA1/U2YraWxyKKg==}
+
   emoji-regex@10.6.0:
     resolution: {integrity: sha512-toUI84YS5YmxW219erniWD0CIVOo46xGKColeNQRgOzDorgBi1v4D71/OFzgD9GO2UGKIv1C3Sp8DAn0+j5w7A==}
 
   enhanced-resolve@5.27.0:
     resolution: {integrity: sha512-Do6BB2xzlcc/odFg+XEYyneAx4T/WfywO71yw9ePS2tVfRsf7JVR4mUeELadIeHzixkzbG5DpluiEFPi2WGfYQ==}
     engines: {node: '>=10.13.0'}
+
+  entities@7.0.1:
+    resolution: {integrity: sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA==}
+    engines: {node: '>=0.12'}
 
   entities@9.0.0:
     resolution: {integrity: sha512-oJFNDJg3kTPwAD1cNn2+WmUq4wFoo09npc3Ydf1D7ED4smRiWrsKnaLxykrTWgyGEcusc87P5dxlAleol9kpkg==}
@@ -3585,6 +3598,11 @@ snapshots:
 
   bail@2.0.2: {}
 
+  beautiful-mermaid@1.1.3:
+    dependencies:
+      elkjs: 0.11.1
+      entities: 7.0.1
+
   bidi-js@1.1.0:
     dependencies:
       require-from-string: 2.0.2
@@ -3656,12 +3674,16 @@ snapshots:
 
   effect@4.1.4: {}
 
+  elkjs@0.11.1: {}
+
   emoji-regex@10.6.0: {}
 
   enhanced-resolve@5.27.0:
     dependencies:
       graceful-fs: 4.2.12
       tapable: 2.3.4
+
+  entities@7.0.1: {}
 
   entities@9.0.0: {}
 

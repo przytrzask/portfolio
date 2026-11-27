@@ -65,6 +65,9 @@ export const cards = "mt-[22px] grid grid-cols-1 gap-2.5 md:grid-cols-3";
 
 export const card = `flex h-full flex-col gap-1 rounded-xl border-2 border-ink bg-white p-3 text-ink no-underline transition-[translate,box-shadow] duration-150 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-hard-sm ${focusRing}`;
 
+export const cardProject =
+  "block truncate font-mono text-[11px] font-bold text-slope";
+
 export const cardValue =
   "block font-mono text-[28px] font-bold leading-none tracking-[-.03em] tabular-nums";
 
@@ -74,9 +77,6 @@ export const cardCta =
   "mt-auto flex items-center gap-1 pt-1 font-mono text-[11px] font-bold uppercase tracking-[.06em] text-blue";
 
 export const srOnly = "sr-only";
-
-export const hint =
-  "mt-4 flex items-center gap-1.5 font-mono text-[13px] text-slope";
 
 export const legend = "mt-4 grid gap-2 font-mono text-[13px] text-body";
 
@@ -123,6 +123,10 @@ export const workProof =
 
 export const md = {
   blockquote: "my-4 border-l-4 border-track pl-4 text-body",
+  diagram: `overflow-x-auto rounded-xl border-2 border-ink bg-white p-3 md:p-4 [&_svg]:mx-auto [&_svg]:block [&_svg]:h-auto [&_svg]:w-full [&_svg]:min-w-[30rem] ${focusRing}`,
+  figcaption:
+    "mt-2 font-mono text-xs font-bold uppercase tracking-[.06em] text-slope",
+  figure: "my-4",
   code: "rounded bg-snow px-1 py-0.5 font-mono text-[0.88em] text-ink",
   h2: "mb-4 text-[clamp(24px,3vw,38px)] font-extrabold leading-[1.05] tracking-[-.01em]",
   h3: "mb-2 mt-7 flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-[.08em] text-slope first:mt-0 before:inline-block before:size-2 before:rotate-45 before:bg-blue",

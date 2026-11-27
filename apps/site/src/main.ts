@@ -1,4 +1,4 @@
-import { Effect, Schema } from "effect";
+import { Effect, Option, Schema } from "effect";
 import { Command } from "foldkit";
 import type { Runtime, Update } from "foldkit";
 import type { Document, Html, HtmlBuilder } from "foldkit/html";
@@ -12,6 +12,7 @@ import { findWork, works } from "./content/case-studies.ts";
 import { portfolio } from "./content/portfolio.ts";
 import { proofCards } from "./content/proof-cards.ts";
 import { copy } from "./copy.ts";
+import { absoluteUrl, metaForRoute } from "./meta.ts";
 import { homeView } from "./pages/home.ts";
 import { zoneView } from "./pages/piste.ts";
 import { shippedView } from "./pages/shipped.ts";
@@ -76,7 +77,7 @@ export const update = (model: Model, message: Message) =>
     CompletedNavigateInternal: () => ({ model }),
   });
 
-const notFoundView = (h: HtmlBuilder<Message>, path: string): Html =>
+const notFoundView = (h: HtmlBuilder<Message>): Html =>
   h.div(
     [h.Class(styles.pageWork)],
     [
@@ -89,7 +90,7 @@ const notFoundView = (h: HtmlBuilder<Message>, path: string): Html =>
             [
               h.p([h.Class(styles.label)], [copy.notFoundLabel]),
               h.h1([h.Class(styles.h1Work)], [copy.notFoundTitle]),
-              h.p([h.Class(styles.body)], [copy.notFoundBody(path)]),
+              h.p([h.Class(styles.body)], [copy.notFoundBody]),
               h.a([h.Href(homeHref()), h.Class(styles.moreLink)], [copy.home]),
             ]
           ),
@@ -102,32 +103,26 @@ const notFoundView = (h: HtmlBuilder<Message>, path: string): Html =>
 const pageView = (model: Model, h: HtmlBuilder<Message>): Html =>
   AppRoute.match(model.route, {
     Home: () => homeView(h, { portfolio, proofCards, shipped, works }),
-    NotFound: ({ path }) => notFoundView(h, path),
+    NotFound: () => notFoundView(h),
     Shipped: () => shippedView(h, { shipped, works }),
     Work: ({ slug }) => {
       const work = findWork(slug);
 
-      return work === undefined
-        ? notFoundView(h, `/work/${slug}`)
-        : workView(h, work);
+      return work === undefined ? notFoundView(h) : workView(h, work);
     },
   });
 
-const pageTitle = (route: AppRoute): string =>
-  AppRoute.match(route, {
-    Home: () => copy.documentTitle,
-    NotFound: () => `${copy.notFoundTitle} · ${copy.documentTitle}`,
-    Shipped: () => copy.shippedTitle,
-    Work: ({ slug }) => {
-      const work = findWork(slug);
+export const view = (model: Model, h: HtmlBuilder<Message>): Document => {
+  const meta = metaForRoute(model.route);
+  const body = h.main([h.Class(styles.main)], [pageView(model, h)]);
 
-      return work === undefined
-        ? `${copy.notFoundTitle} · ${copy.documentTitle}`
-        : copy.workTitle(work.caseStudy.title);
-    },
+  return Option.match(meta.maybePath, {
+    onNone: () => ({ body, title: meta.title }),
+    onSome: (path) => ({
+      body,
+      canonical: absoluteUrl(path),
+      ogUrl: absoluteUrl(path),
+      title: meta.title,
+    }),
   });
-
-export const view = (model: Model, h: HtmlBuilder<Message>): Document => ({
-  body: h.main([h.Class(styles.main)], [pageView(model, h)]),
-  title: pageTitle(model.route),
-});
+};

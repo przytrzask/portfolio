@@ -36,7 +36,9 @@ The first version of the gate had hard rules for diff size, routes and retry cou
 - Architecture diagram:
 
 ```mermaid
-flowchart LR
+flowchart TD
+  accTitle: Ticket-to-merge agent loop
+  accDescr: Triage sends each ticket to a one-shot fixer or a research, plan and implement path. Both go through end-to-end verification, then a merge gate auto-merges the change or sends it to human review.
   T[Ticket] --> TR{triage}
   TR -- one-shot --> O[one-shot fixer]
   TR -- research --> R[research, plan, implement]

@@ -32,6 +32,17 @@ describe("case study pages", () => {
   });
 });
 
+describe("not found page", () => {
+  test("renders the off-piste view with a way home", () => {
+    scene(
+      { update, view },
+      given({ route: AppRoute.NotFound({ path: "/nope" }) }),
+      expect(role("heading", { level: 1, name: copy.notFoundTitle })).toExist(),
+      expect(role("link", { name: copy.home })).toHaveAttr("href", "/")
+    );
+  });
+});
+
 describe("shipped page", () => {
   test("lists curated wins with their proof links", () => {
     scene(
