@@ -1,6 +1,15 @@
+import { fileURLToPath } from "node:url";
+
+import { markdown } from "@foldkit/markdown/vite";
 import { foldkit } from "@foldkit/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
+
+import { diagrams } from "./src/build/diagrams-plugin.ts";
+import { emitStatic } from "./src/build/emit-static-plugin.ts";
+import { BragFrontmatter } from "./src/content/brag-frontmatter.ts";
+
+const repoRoot = fileURLToPath(new URL("../..", import.meta.url));
 
 export default defineConfig({
   optimizeDeps: {
@@ -8,6 +17,8 @@ export default defineConfig({
   },
   plugins: [
     tailwindcss(),
+    diagrams(),
+    markdown({ frontmatter: BragFrontmatter }),
     foldkit({
       ssr: {
         build: {
@@ -17,5 +28,10 @@ export default defineConfig({
         serverEntry: "/src/entry.server.ts",
       },
     }),
+    emitStatic(),
   ],
+  publicDir: `${repoRoot}public`,
+  server: {
+    fs: { allow: [repoRoot] },
+  },
 });
