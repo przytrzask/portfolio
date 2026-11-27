@@ -1,0 +1,28 @@
+{
+  "name": "@portfolio/infra",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "pnpm run typecheck",
+    "deploy": "alchemy deploy",
+    "destroy": "alchemy destroy",
+    "plan": "alchemy plan",
+    "test": "vitest run",
+    "typecheck": "effect-tsrs diagnostics --project tsconfig.json --strict --type-check"
+  },
+  "dependencies": {
+    "@alchemy.run/cloudflare": "2.0.0-beta.87",
+    "@alchemy.run/github": "2.0.0-beta.87",
+    "@effect/platform-node": "4.1.4",
+    "@portfolio/site": "workspace:*",
+    "alchemy": "2.0.0-beta.87",
+    "effect": "4.1.4"
+  },
+  "devDependencies": {
+    "@effect/vitest": "4.1.4",
+    "@types/node": "24.19.2",
+    "typescript": "7.0.2",
+    "vitest": "5.1.0"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "@effect/language-service",
+        "allowedUnstableApis": [
+          "@effect/platform-node/NodeServices",
+          "@effect/vitest",
+          "effect/crypto/Digest",
+          "effect/crypto/SecureRandom",
+          "effect/http/HttpClient"
+        ]
+      }
+    ],
+    "allowImportingTsExtensions": true,
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "target": "ESNext",
+    "types": ["node"]
+  },
+  "include": [
+    "alchemy.run.ts",
+    "stacks/**/*.ts",
+    "src/**/*.ts",
+    "test/**/*.ts",
+    "*.config.ts"
+  ]
+}
