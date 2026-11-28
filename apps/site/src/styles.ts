@@ -1,4 +1,4 @@
-const zoneGap = "gap-6 md:gap-[24vh]";
+const zoneGap = "gap-6 md:gap-[40vh]";
 
 const focusRing =
   "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue";
@@ -6,7 +6,9 @@ const focusRing =
 export const pageWork =
   "relative flex flex-col gap-6 overflow-x-clip pb-16 pt-6 font-sans text-ink md:gap-[8vh] md:pb-[20vh] md:pt-[4vh]";
 
-export const page = `relative flex flex-col overflow-x-clip pb-16 pt-6 font-sans text-ink md:pb-[40vh] md:pt-0 ${zoneGap}`;
+export const runGroup = "group/run";
+
+export const page = `${runGroup} relative isolate flex flex-col overflow-x-clip pb-16 pt-6 font-sans text-ink md:pb-[40vh] md:pt-0 ${zoneGap}`;
 
 export const zoneStack = `flex list-none flex-col p-0 ${zoneGap}`;
 
@@ -77,6 +79,12 @@ export const cardCta =
   "mt-auto flex items-center gap-1 pt-1 font-mono text-[11px] font-bold uppercase tracking-[.06em] text-blue";
 
 export const srOnly = "sr-only";
+
+export const hint =
+  "mt-4 hidden items-center gap-1.5 font-mono text-[13px] text-slope md:motion-safe:group-has-[ski-rider:state(running)]/run:flex";
+
+export const rider =
+  "pointer-events-none absolute inset-0 z-[-1] hidden overflow-hidden md:motion-safe:block";
 
 export const legend = "mt-4 grid gap-2 font-mono text-[13px] text-body";
 

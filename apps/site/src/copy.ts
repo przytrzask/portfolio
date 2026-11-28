@@ -47,6 +47,7 @@ export const copy = {
   proofCta: "Read the case study",
   proofCtaShort: "case study",
   trailLegend: "Trail markers rate each case study by depth",
+  scrollHint: "scroll to drop in",
   resume: "Resume (PDF)",
   resumeHref: "/resume.pdf",
   shippedAll: "All shipped work",

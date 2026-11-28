@@ -35,6 +35,15 @@ NDA: no client or employer-internal names, people, ticket IDs or internal URLs. 
 - Fonts are self-hosted from `@fontsource-variable/tasa-orbiter` and `@fontsource-variable/geist-mono` (OFL-1.1); `src/document.ts` preloads the Latin TASA Orbiter file. No third-party URL may appear in the build.
 - Icons are SVG path data in `src/icons.ts`, copied from simple-icons (CC0-1.0; LinkedIn from 13.0.0, the last release that had it) and lucide-static (ISC, © Lucide Icons and Contributors). Every icon is `aria-hidden` beside visible link text.
 
+## Skier
+
+- On the home page, desktop only (min-width 760 px) and only without `prefers-reduced-motion`, a 2D SVG skier rides a carve path down the page as you scroll and leaves tracks. Phones and reduced-motion visitors get the same page with no rider and never download its code.
+- `src/rider/path.ts` is pure and property-tested (`test/rider-path.test.ts`, fast-check): `xAt` carves beside each `[data-side]` zone and crosses between zones on a C1 Hermite curve; `keyframes` maps scroll progress to the rider's y, so it holds 36% down the viewport.
+- `src/rider/element.ts` binds `<ski-rider>` with Foldkit `CustomElement.define`; SSR emits only the empty `aria-hidden` tag. `src/rider/boot.ts` (in the initial bundle) checks the media queries and lazy-imports `src/rider/ski-rider.ts`, the only module that imports `motion` (14.14.0, MIT). The element draws in its shadow root, drives CSS `offset-path`/`offset-distance` and the tracks' `stroke-dashoffset` with `motion/mini` `animate`, and binds them to scroll with `scroll()` (native `ScrollTimeline` where supported).
+- The hero's "scroll to drop in" hint is in the HTML but shown only while the rider runs (`ski-rider:state(running)`, `md:`, `motion-safe:`).
+- `RIDER` colours in `ski-rider.ts` come from powder's `art/skier.py` (the owner's gear): charcoal jacket, tan pants, orange pack, tan helmet, white skis, orange poles.
+- Bundle rule: `motion` must never reach the initial `app-*.js`; check `dist/client/assets` after a build.
+
 ## Commands
 
 | Command | What it does |

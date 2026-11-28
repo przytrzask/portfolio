@@ -88,11 +88,26 @@ describe("home page", () => {
     );
   });
 
-  test("shows no scroll hint until the skier exists", () => {
+  test("renders the ski rider as an empty, hidden tag", () => {
     scene(
       { update, view },
       given({ route: AppRoute.Home() }),
-      expect(selector("main")).not.toContainText("scroll to drop in")
+      expectAll(all.selector("ski-rider")).toHaveCount(1),
+      expect(selector("ski-rider")).toHaveAttr("aria-hidden", "true"),
+      expect(selector("ski-rider")).toBeEmpty()
+    );
+  });
+
+  test("keeps the scroll hint hidden unless the desktop rider is running", () => {
+    scene(
+      { update, view },
+      given({ route: AppRoute.Home() }),
+      expect(selector("[data-scroll-hint]")).toContainText("scroll to drop in"),
+      expect(selector("[data-scroll-hint]")).toHaveAttr("aria-hidden", "true"),
+      expect(selector("[data-scroll-hint]")).toHaveClass("hidden"),
+      expect(selector("[data-scroll-hint]")).toHaveClass(
+        "md:motion-safe:group-has-[ski-rider:state(running)]/run:flex"
+      )
     );
   });
 });

@@ -6,6 +6,7 @@ import type { Work } from "../content/case-studies.ts";
 import { Depth, known, type Portfolio } from "../content/portfolio.ts";
 import { copy, HEADLINE, HEADLINE_HIGHLIGHT } from "../copy.ts";
 import { type IconName, iconView } from "../icons.ts";
+import { skiRider } from "../rider/element.ts";
 import { shippedHref, workHref } from "../route.ts";
 import * as styles from "../styles.ts";
 import {
@@ -80,7 +81,10 @@ const proofCard = <Message>(h: HtmlBuilder<Message>, work: Work): Html =>
             [copy.projectLabel(work.artifact.name)]
           ),
           " ",
-          h.strong([h.Class(styles.cardValue)], [work.artifact.proof.value]),
+          h.strong(
+            [h.Class(styles.cardValue), h.DataAttribute("proof-value", "")],
+            [work.artifact.proof.value]
+          ),
           " ",
           h.span([h.Class(styles.cardLabel)], [work.artifact.proof.label]),
           " ",
@@ -139,6 +143,14 @@ const heroZone = <Message>(
         h.ul(
           [h.AriaLabel(copy.proofCards), h.Class(styles.cards)],
           content.proofCards.map((work) => proofCard(h, work))
+        ),
+        h.p(
+          [
+            h.Class(styles.hint),
+            h.AriaHidden(true),
+            h.DataAttribute("scroll-hint", ""),
+          ],
+          [iconView(h, "arrowDown", styles.iconSmall), copy.scrollHint]
         ),
       ]
     ),
@@ -238,6 +250,7 @@ export const homeView = <Message>(
   return h.div(
     [h.Class(styles.page)],
     [
+      skiRider.withMessage(h)([h.AriaHidden(true), h.Class(styles.rider)]),
       heroZone(h, content),
       h.section(
         [h.AriaLabelledBy("work-heading"), h.Class(styles.zoneStack)],

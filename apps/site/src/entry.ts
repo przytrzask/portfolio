@@ -1,6 +1,7 @@
 import { Runtime } from "foldkit";
 
 import { init, Message, Model, update, view } from "./main.ts";
+import { boot } from "./rider/boot.ts";
 
 import "./styles.css";
 
@@ -18,3 +19,12 @@ const application = Runtime.makeApplication({
 });
 
 Runtime.hydrate(application);
+
+boot(
+  (query) => window.matchMedia(query),
+  () =>
+    import("./rider/ski-rider.ts").then(
+      (rider) => rider.register(),
+      () => undefined
+    )
+);
